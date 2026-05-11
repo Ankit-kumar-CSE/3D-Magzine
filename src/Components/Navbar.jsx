@@ -28,7 +28,7 @@ const Navbar = () => {
             onClick={() => window.location.hash = "Home"}
             transition={{ duration: 0.1, spring: { stiffness: 300 } , damping: 18}} 
             className="rounded-xl bg-[#111827] px-5 py-3 transition hover:bg-[#1f2937] border border-transparent hover:border-purple-700 duration-300">
-              Home
+              Nature
             </motion.button>
 
             <motion.button 
