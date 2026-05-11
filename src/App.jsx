@@ -1,9 +1,8 @@
+import React from "react";
 import { Canvas } from "@react-three/fiber";
 import Navbar from "./Components/Navbar";
 import UI from "./Components/UI";
-import Experience from "./Components/Experience";
 import Book from "./Components/Book";
-import "./App.css";
 
 
 const App = () => {
@@ -24,10 +23,14 @@ const App = () => {
       " />
 
       {/* Navbar */}
-      <Navbar />
+      <div className="absolute z-50 w-full">
+        <Navbar />
+      </div>
 
       {/* 3D Canvas */}
-      <Book />
+      <div className="h-screen w-full absolute inset-0 z-10">
+        <Book />
+      </div>
 
       {/* UI */}
       <UI />
