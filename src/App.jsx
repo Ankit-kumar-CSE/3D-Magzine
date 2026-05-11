@@ -3,6 +3,7 @@ import { Canvas } from "@react-three/fiber";
 import Navbar from "./Components/Navbar";
 import UI from "./Components/UI";
 import Book from "./Components/Book";
+import "./App.css";
 
 
 const App = () => {
@@ -28,7 +29,7 @@ const App = () => {
       </div>
 
       {/* 3D Canvas */}
-      <div className="h-screen w-full absolute inset-0 z-10">
+      <div className="h-screen w-full absolute inset z-10">
         <Book />
       </div>
 
