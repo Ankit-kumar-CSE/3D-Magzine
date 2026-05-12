@@ -1,80 +1,109 @@
 import { useTexture } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
+import { useMemo} from "react";
 import * as THREE from "three";
-import { useRef } from "react";
 
 const Page = ({
   front,
   back,
-  isFlipping,
-  flipDirection,
 }) => {
 
+  // TEXTURES
   const frontTexture = useTexture(front);
   const backTexture = useTexture(back);
 
-  const groupRef = useRef();
 
-  useFrame(() => {
+  // LEFT PAGE CURVE
+  const leftGeometry = useMemo(() => {
 
-    if (!groupRef.current) return;
-
-    let targetRotation = 0;
-
-    if (isFlipping) {
-
-      targetRotation =
-        flipDirection === "next"
-          ? -Math.PI
-          : Math.PI;
-    }
-
-    groupRef.current.rotation.y = THREE.MathUtils.lerp(
-      groupRef.current.rotation.y,
-      targetRotation,
-      0.08
+    const geo = new THREE.PlaneGeometry(
+      3,
+      5,
+      40,
+      40
     );
 
-    if (!isFlipping) {
+    const position = geo.attributes.position;
 
-      groupRef.current.rotation.y = THREE.MathUtils.lerp(
-        groupRef.current.rotation.y,
-        0,
-        0.08
-      );
+    for (let i = 0; i < position.count; i++) {
+
+      const x = position.getX(i);
+
+      const z =
+        Math.sin((x / 3) * Math.PI) * 0.15;
+
+      position.setZ(i, z);
     }
-  });
+
+    position.needsUpdate = true;
+
+    geo.computeVertexNormals();
+
+    return geo;
+
+  }, []);
+
+  // RIGHT PAGE CURVE
+  const rightGeometry = useMemo(() => {
+
+    const geo = new THREE.PlaneGeometry(
+      3,
+      5,
+      40,
+      40
+    );
+
+    const position = geo.attributes.position;
+
+    for (let i = 0; i < position.count; i++) {
+
+      const x = position.getX(i);
+
+      const z =
+        -Math.sin((x / 3) * Math.PI) * 0.15;
+
+      position.setZ(i, z);
+    }
+
+    position.needsUpdate = true;
+
+    geo.computeVertexNormals();
+
+    return geo;
+
+  }, []);
 
   return (
-    <group
-      ref={groupRef}
-      rotation={[-0.2, 0, 0]}
-    >
 
-      {/* Left */}
+    <group rotation={[-0.2, 0, 0]}>
+
+      {/* LEFT PAGE */}
       <mesh
-        position={[-1.45, 0, 0]}
+        position={[-1.5, 0, 0]}
         rotation={[0, 0.2, 0]}
       >
-        <planeGeometry args={[3, 5, 32, 32]} />
+
+        <primitive object={leftGeometry} />
 
         <meshStandardMaterial
           map={frontTexture}
           side={THREE.DoubleSide}
         />
+
       </mesh>
 
-      {/* Right */}
+      {/* RIGHT PAGE */}
       <mesh
-        position={[1.45, 0, 0]}
+        position={[1.5, 0, 0]}
         rotation={[0, -0.2, 0]}
       >
-        <planeGeometry args={[3, 5, 32, 32]} />
+
+        <primitive object={rightGeometry} />
 
         <meshStandardMaterial
           map={backTexture}
           side={THREE.DoubleSide}
         />
+
       </mesh>
 
     </group>

@@ -79,9 +79,7 @@ const prevPage = () => {
           intensity={2} />
         <Page 
           front={frontpage}
-          back={backpage}
-          isFlipping={isFlipping}
-          flipDirection={flipDirection}
+          back={backpage} 
         />
         <OrbitControls
           enablePan={false}
